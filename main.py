@@ -2,7 +2,7 @@ from machine import Pin
 import _thread
 import rp2
 import utime
-from lib.tm1637 import TM1637Decimal
+from lib.tm1637 import TM1637Decimal as TM1637
 import ujson
 
 #signal input pin
@@ -18,7 +18,7 @@ rpm = 0
 rpm_divider = 8
 
 #initialize the display
-tm = TM1637Decimal(clk=Pin(GPIO_SEG_CLK), dio=Pin(GPIO_SEG_DIO))
+tm = TM1637(clk=Pin(GPIO_SEG_CLK), dio=Pin(GPIO_SEG_DIO))
 
 def startup():
     tm.scroll("hello", delay=250)
@@ -71,15 +71,16 @@ def core1_routine():
         cnt = ((1 << 32) - val)
         tms = cnt / 62500 #calculates total miliseconds the count of clocks took
         rps = 1000 / tms
-        rpm = round(rps*60) / rpm_divider
+        rpm = int(round(rps*60) / rpm_divider)
         
 def loop():
     """
     update display with rpm value every second
     """
     while True:
-        tm.number(rpm)
-        if rpm > 0:
+        val = rpm if rpm > 300 else 0
+        tm.number(val)
+        if val > 300:
             update_hours()
         utime.sleep_ms(1000)
 
