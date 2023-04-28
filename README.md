@@ -6,7 +6,7 @@ When first powered on, the display will show the current total hours (left-align
 
 ### Config
 * `rpm_divider` should be adjusted specifically to your engine. In my case, the frequency from the tach signal at idle was reading ~120Hz. This would equate to 7200RPM at idle -- way too high. My engine idles between 900-1000 according to the owners manual. Dividing the final RPM value by 8 then produces an RPM of 900 at idle.
-* 
+* `rpm_threshold` should be set to the minimum value of the RPM to consider the engine on. I found when turning the engine off, the RPM would get stuck on reading a small RPM value. Any RPM value above this threshold will show on the display and increment the hour meter, else the RPM value will be 0 and will not increment the hour meter.
 
 ### Schematic
 
