@@ -16,6 +16,7 @@ GPIO_SEG_DIO = 26
 global rpm
 rpm = 0
 rpm_divider = 8
+rpm_threshold = 300
 
 #initialize the display
 tm = TM1637(clk=Pin(GPIO_SEG_CLK), dio=Pin(GPIO_SEG_DIO))
@@ -78,9 +79,9 @@ def loop():
     update display with rpm value every second
     """
     while True:
-        val = rpm if rpm > 300 else 0
+        val = rpm if rpm > rpm_threshold else 0
         tm.number(val)
-        if val > 300:
+        if val > rpm_threshold:
             update_hours()
         utime.sleep_ms(1000)
 
